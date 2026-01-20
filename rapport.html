@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Rapport Dynamique</title>
+</head>
+<body>
+  <h1>Générateur de rapport</h1>
+
+  <label>Rédacteur : <input type="text" id="B2"></label><br>
+  <label>Effectifs présent : <input type="number" id="B3"></label><br>
+  <label>Lieu(s) : <input type="text" id="B4"></label><br>
+
+  <label>Suspects : 
+    <select id="B5" multiple>
+      <option value="Hermandad">Hermandad</option>
+      <option value="Meute de l'ouest">Meute de l'ouest</option>
+      <option value="Butchers">Butchers</option>
+    </select>
+  </label><br>
+
+  <label>Membres : 
+    <select id="B6" multiple>
+      <option value="Mateo Valdes">Mateo Valdes</option>
+      <option value="Diego Calderon">Diego Calderon</option>
+      <option value="Elena Martinez">Elena Martinez</option>
+    </select>
+  </label><br>
+
+  <button onclick="generateReport()">Générer le rapport</button>
+
+  <pre id="report" style="border:1px solid #ccc; padding:10px;"></pre>
+
+  <script>
+    function generateReport() {
+      const B2 = document.getElementById("B2").value;
+      const B3 = document.getElementById("B3").value;
+      const B4 = document.getElementById("B4").value;
+      const B5 = Array.from(document.getElementById("B5").selectedOptions).map(o=>o.value).join(", ");
+      const B6 = Array.from(document.getElementById("B6").selectedOptions).map(o=>o.value).join(", ");
+      const memberCount = B6 ? Array.from(document.getElementById("B6").selectedOptions).length : 0;
+      const today = new Date();
+      const dateStr = today.getDate().toString().padStart(2,"0") + "/" + (today.getMonth()+1).toString().padStart(2,"0") + "/" + today.getFullYear();
+
+      const report = 
+`Rédacteur : ${B2}
+Effectifs présent : ${B3}
+Lieu(s) : ${B4}
+Date des faits : ${dateStr}
+Suspect(s) : ${B5}
+${B6 ? "Membres : " + B6 : ""}
+-----------------------------------------------------------
+
+Rapport :
+Le bureau des shérifs de Rhodes a été informé qu'un braquage de saloon avait lieu à ${B4}.
+J'ai donc pris l'intervention. Une fois sur place nous sommes tombés nez à nez avec ${memberCount} individus se revendiquant comme étant les ${B5}.
+`;
+
+      document.getElementById("report").textContent = report;
+    }
+  </script>
+</body>
+</html>
